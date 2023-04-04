@@ -22,9 +22,9 @@
        android:layout_marginTop="38dp"
        app:layout_constraintBottom_toBottomOf="parent"
        app:dotsWidthFactor="2.5"
-       app:Loyaut_constraintTop_toTopOf="parent"
-       app:Loyaut_constraintEnd_toEndOf="parent"
-       app:Loyaut_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
        app:selectedDotColor="@color/black"
        app:progressMode="true" />
 
