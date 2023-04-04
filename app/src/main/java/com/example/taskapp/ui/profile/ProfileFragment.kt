@@ -8,13 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.example.taskapp.databinding.FragmentProfileBinding
+import com.example.taskapp.utils.Preferences
 
 class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
-
+lateinit var prefs:Preferences
     private var mGetContent: ActivityResultLauncher<String> = registerForActivityResult(
         ActivityResultContracts.GetContent()) { uri ->
         Log.e("ol", ": $uri")
@@ -34,13 +36,16 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-
-        initViews()
-        initListeners()
-
+        prefs = Preferences(requireContext())
+        binding.edit.setText(prefs.getName())
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initListeners()
+        initViews()
+    }
     private fun initListeners() {
         binding.imgProfile.setOnClickListener{
             mGetContent.launch("image/*")
@@ -50,7 +55,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun initViews() {
-
+binding.edit.addTextChangedListener {
+    prefs.setName(binding.edit.text.toString())
+      }
     }
 }
 
