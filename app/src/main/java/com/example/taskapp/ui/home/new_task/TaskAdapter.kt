@@ -10,7 +10,7 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>()  {
 
     private var taskList = arrayListOf<TaskModel>()
 
-    fun addTask(taskModel: TaskModel){
+    fun addTask(taskModel: List<TaskModel>){
         taskList.add(0, taskModel)
     }
 
