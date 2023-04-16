@@ -1,7 +1,7 @@
 package com.example.taskapp.ui.profile
 
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,46 +15,48 @@ import com.example.taskapp.utils.Preferences
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var binding: FragmentProfileBinding
-    lateinit var prefs: Preferences
-    private var mGetContent: ActivityResultLauncher<String> = registerForActivityResult(
-        ActivityResultContracts.GetContent()
-    ) { uri ->
-        Log.e("ol", ": $uri")
-        //  binding.imgProfile.setImageURI(uri)
+    private lateinit var preferences: Preferences
 
-        Glide.with(this)
-            .load(uri)
-            .circleCrop()
-            .into(binding.imgProfile)
-    }
+    private lateinit var binding: FragmentProfileBinding
+
+
+    private val getContent: ActivityResultLauncher<String> =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri: Uri? ->
+
+            Glide.with(this)
+                .load(imageUri.toString())
+                .into(binding.imgProfile)
+            preferences.saveImage(imageUri.toString())
+        }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View {
-        binding = FragmentProfileBinding.inflate(layoutInflater)
-        prefs = Preferences(requireContext())
-        binding.edit.setText(prefs.getName())
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        binding.imgProfile.setOnClickListener {
+            getContent.launch("image/*")
+        }
+        preferences = Preferences(requireContext())
+        saveChanges()
+        checkChanges()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initListeners()
-        initViews()
-    }
-
-    private fun initListeners() {
-        binding.imgProfile.setOnClickListener {
-            mGetContent.launch("image/*")
+    private fun saveChanges() {
+        binding.edit.addTextChangedListener {
+            preferences.saveName(binding.edit.text.toString())
         }
     }
 
-    private fun initViews() {
-        binding.edit.addTextChangedListener {
-            prefs.setName(binding.edit.text.toString())
+    private fun checkChanges() {
+        if (preferences.getName() != "") {
+            binding.edit.setText(preferences.getName())
+        }
+        if (preferences.getImage() != "") {
+            Glide.with(this).load(preferences.getImage()).into(binding.imgProfile)
         }
     }
 }
-

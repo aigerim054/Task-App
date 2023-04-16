@@ -67,6 +67,6 @@ class HomeFragment : Fragment() {
 //        }
 //    }
         val listOfTask = App.db.TaskDao()?.getAllTask()
-        taskAdapter.addTask(listOfTask as List<TaskModel>)
+        taskAdapter.addTasks(listOfTask as List<TaskModel>)
     }
 }

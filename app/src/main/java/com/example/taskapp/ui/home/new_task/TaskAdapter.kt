@@ -1,5 +1,6 @@
 package com.example.taskapp.ui.home.new_task
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,8 +11,11 @@ class TaskAdapter : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>()  {
 
     private var taskList = arrayListOf<TaskModel>()
 
-    fun addTask(taskModel: List<TaskModel>){
-        taskList.add(0, taskModel)
+    @SuppressLint("NotifyDataSetChanged")
+    fun addTasks(list: List<TaskModel>) {
+        taskList.clear()
+        taskList.addAll(list)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

@@ -10,16 +10,16 @@ interface TaskDao {
     fun insert(task: TaskModel?)
 
 
-    @Query("SELECT * FROM TaskMode")
+    @Query("SELECT * FROM TaskModel")
     fun getAllTask(): List<TaskModel>?
 
-    @Query("SELECT * FROM TaskMode ORDER BY title DESC")
+    @Query("SELECT * FROM TaskModel ORDER BY title DESC")
     fun getAllTaskByAlphabetAz(): List<TaskModel?>?
 
-    @Query("SELECT * FROM TaskMode ORDER BY title ASC")
+    @Query("SELECT * FROM TaskModel ORDER BY title ASC")
     fun getAllTaskByAlphabetZa(): List<TaskModel?>?
 
-    @Query("SELECT * FROM TaskMode ORDER BY id DESC")
+    @Query("SELECT * FROM TaskModel ORDER BY id DESC")
     fun getAllTaskByDate(): List<TaskModel?>?
 
     @Delete
